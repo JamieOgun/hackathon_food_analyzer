@@ -9,29 +9,45 @@ function formatTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
   });
+}
+
+function clampConfidence(value: number) {
+  return Math.min(100, Math.max(0, Math.round(value * 100)));
 }
 
 export default function ScanLog({ scans }: ScanLogProps) {
   if (scans.length === 0) {
-    return <p className="text-sm text-stone-400">No scans yet.</p>;
+    return (
+      <p className="rounded-[12px] border border-dashed border-stone/40 bg-background px-4 py-4 text-sm leading-6 text-stone-600">
+        No scans yet. Your completed tray scans will appear here.
+      </p>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400">
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm border-2 border-dashed border-emerald-400" />
+    <div className="flex flex-col gap-4">
+      <div
+        className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-stone-600"
+        aria-label="Detection legend"
+      >
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="inline-block h-3 w-3 border border-dashed border-emerald-600"
+          />
           Plate / tray
         </span>
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm border-2 border-waste bg-waste/15" />
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="inline-block h-3 w-3 border border-waste bg-waste/15"
+          />
           Leftover food
         </span>
       </div>
 
-      <ul className="flex max-h-[65dvh] flex-col gap-3 overflow-y-auto pr-1">
+      <ol className="flex flex-col gap-3">
         {scans
           .slice()
           .reverse()
@@ -39,85 +55,98 @@ export default function ScanLog({ scans }: ScanLogProps) {
             const leftovers = (scan.detections ?? []).filter(
               (d) => d.kind === "leftover",
             );
+            const confidence = clampConfidence(scan.confidence);
+
             return (
               <li
                 key={scan.id}
-                className={`grid gap-3 rounded-lg border border-stone-200 p-3 dark:border-stone-800 ${
-                  scan.image_url
-                    ? "grid-cols-[7rem_1fr] sm:grid-cols-[minmax(0,11rem)_1fr]"
-                    : "grid-cols-1"
-                }`}
+                className="rounded-[12px] border border-line bg-surface p-4"
               >
-                {scan.image_url && (
-                  <AnnotatedImage
-                    src={scan.image_url}
-                    alt={`Scanned ${scan.dish_name}`}
-                    detections={scan.detections ?? []}
-                  />
-                )}
+                <article className="grid gap-4 sm:grid-cols-[minmax(0,9rem)_minmax(0,1fr)]">
+                  {scan.image_url ? (
+                    <AnnotatedImage
+                      src={scan.image_url}
+                      alt={`Annotated scan of ${scan.dish_name}`}
+                      detections={scan.detections}
+                    />
+                  ) : (
+                    <div className="flex min-h-24 items-center justify-center rounded-[8px] border border-dashed border-stone/40 bg-background px-3 text-center text-xs text-stone-500">
+                      Image unavailable
+                    </div>
+                  )}
 
-                <div className="flex min-w-0 flex-col gap-2 text-sm">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <span className="font-semibold text-foreground">
-                      {scan.dish_name}
-                    </span>
-                    <span className="font-mono font-medium text-brand-deep dark:text-waste">
-                      {scan.yen_wasted != null
-                        ? `¥${scan.yen_wasted.toLocaleString()} wasted`
-                        : "—"}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5 text-xs">
-                    <span className="rounded-full bg-waste/15 px-2 py-0.5 font-medium text-brand-deep dark:bg-waste/20 dark:text-waste">
-                      {BUCKET_LABEL[scan.remaining_bucket]} (
-                      {Math.round(scan.remaining_fraction * 100)}%)
-                    </span>
-                    <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600 dark:bg-stone-800 dark:text-stone-300">
-                      {Math.round(scan.confidence * 100)}% confident
-                    </span>
-                    <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600 dark:bg-stone-800 dark:text-stone-300">
-                      {scan.source === "camera" ? "Live camera" : "Upload"} ·{" "}
-                      {formatTime(scan.timestamp)}
-                    </span>
-                  </div>
-
-                  {scan.reasoning && (
-                    <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
-                        Reasoning
-                      </h4>
-                      <p className="text-stone-700 dark:text-stone-300">
-                        {scan.reasoning}
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h4 className="font-semibold text-brand-deep">
+                          {scan.dish_name}
+                        </h4>
+                        <time
+                          className="mt-1 block text-xs text-stone-500"
+                          dateTime={scan.timestamp}
+                        >
+                          {formatTime(scan.timestamp)} ·{" "}
+                          {scan.source === "camera" ? "Live camera" : "Upload"}
+                        </time>
+                      </div>
+                      <p className="shrink-0 text-sm font-semibold tabular-nums text-brand-deep">
+                        {scan.yen_wasted != null
+                          ? `¥${scan.yen_wasted.toLocaleString()} wasted`
+                          : "Cost unavailable"}
                       </p>
                     </div>
-                  )}
 
-                  {(leftovers.length > 0 || scan.visible_items.length > 0) && (
-                    <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
-                        Detected leftovers
-                      </h4>
-                      <div className="mt-1 flex flex-wrap gap-1.5">
-                        {(leftovers.length > 0
-                          ? leftovers.map((d) => d.label)
-                          : scan.visible_items
-                        ).map((item, i) => (
-                          <span
-                            key={i}
-                            className="rounded-sm bg-waste/20 px-1.5 py-0.5 text-xs text-brand-deep dark:bg-waste/25 dark:text-waste"
-                          >
-                            {item}
-                          </span>
-                        ))}
+                    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                      <div>
+                        <dt className="text-stone-500">Leftovers</dt>
+                        <dd className="mt-0.5 font-medium text-brand-deep">
+                          {BUCKET_LABEL[scan.remaining_bucket]} (
+                          {Math.min(
+                            100,
+                            Math.max(
+                              0,
+                              Math.round(scan.remaining_fraction * 100),
+                            ),
+                          )}
+                          %)
+                        </dd>
                       </div>
-                    </div>
-                  )}
-                </div>
+                      <div>
+                        <dt className="text-stone-500">Confidence</dt>
+                        <dd className="mt-0.5 font-medium text-brand-deep">
+                          {confidence}%
+                        </dd>
+                      </div>
+                    </dl>
+
+                    {scan.reasoning && (
+                      <p className="mt-3 text-sm leading-6 text-stone-700">
+                        {scan.reasoning}
+                      </p>
+                    )}
+
+                    {(leftovers.length > 0 ||
+                      scan.visible_items?.length > 0) && (
+                      <div className="mt-3">
+                        <h5 className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                          Visible leftovers
+                        </h5>
+                        <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-stone-700">
+                          {(leftovers.length > 0
+                            ? leftovers.map((d) => d.label)
+                            : scan.visible_items
+                          ).map((item, index) => (
+                            <li key={`${item}-${index}`}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </article>
               </li>
             );
           })}
-      </ul>
+      </ol>
     </div>
   );
 }

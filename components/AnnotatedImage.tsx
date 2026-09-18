@@ -3,51 +3,59 @@ import type { Detection } from "@/lib/types";
 interface AnnotatedImageProps {
   src: string;
   alt: string;
-  detections: Detection[];
+  detections?: Detection[] | null;
   showLabels?: boolean;
+  className?: string;
 }
 
 const KIND_STYLE: Record<Detection["kind"], { box: string; chip: string }> = {
   plate: {
-    box: "border-2 border-dashed border-emerald-400",
-    chip: "bg-emerald-500 text-white",
+    box: "border border-dashed border-emerald-600",
+    chip: "bg-emerald-700 text-white",
   },
   leftover: {
-    box: "border-2 border-waste bg-waste/15",
+    box: "border border-waste bg-waste/15",
     chip: "bg-waste text-brand-deep",
   },
 };
 
-/** Image with detection boxes overlaid. Boxes are positioned in percentages
- * of the rendered image, so they stay aligned at any display size. */
+/** Image with detection boxes overlaid. Boxes use the model's 0-1000 grid. */
 export default function AnnotatedImage({
   src,
   alt,
   detections,
   showLabels = true,
+  className = "",
 }: AnnotatedImageProps) {
   return (
-    <div className="relative w-full overflow-hidden rounded-md bg-black">
+    <div
+      className={`relative w-full overflow-hidden rounded-[8px] border border-line bg-stone-100 ${className}`}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL, next/image can't optimize it */}
-      <img src={src} alt={alt} className="block w-full" />
-      {detections.map((d, i) => {
+      <img src={src} alt={alt} className="block h-auto w-full object-contain" />
+      {(detections ?? []).map((d, i) => {
         const [x0, y0, x1, y1] = d.box;
         const style = KIND_STYLE[d.kind];
+        const left = Math.min(100, Math.max(0, x0 / 10));
+        const top = Math.min(100, Math.max(0, y0 / 10));
+        const width = Math.min(100 - left, Math.max(0, (x1 - x0) / 10));
+        const height = Math.min(100 - top, Math.max(0, (y1 - y0) / 10));
+
         return (
           <div
-            key={i}
+            key={`${d.kind}-${d.label}-${i}`}
             className={`pointer-events-none absolute rounded-sm ${style.box}`}
             style={{
-              left: `${x0 / 10}%`,
-              top: `${y0 / 10}%`,
-              width: `${(x1 - x0) / 10}%`,
-              height: `${(y1 - y0) / 10}%`,
+              left: `${left}%`,
+              top: `${top}%`,
+              width: `${width}%`,
+              height: `${height}%`,
             }}
           >
             {showLabels && (
               <span
-                className={`absolute left-0 max-w-full truncate rounded-sm px-1 text-[10px] font-semibold leading-4 ${style.chip} ${
-                  y0 < 40 ? "top-0" : "-top-4"
+                className={`absolute left-0 max-w-full truncate px-1 text-[10px] font-semibold leading-4 ${style.chip} ${
+                  top < 4 ? "top-0" : "-top-4"
                 }`}
               >
                 {d.label}

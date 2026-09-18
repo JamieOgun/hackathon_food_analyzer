@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import Capture, { type AnalyzeOutcome } from "@/components/Capture";
 import ResultsPanel from "@/components/ResultsPanel";
@@ -53,9 +54,18 @@ export default function Home() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
-      <header className="bg-brand-deep px-6 py-4">
-        <h1 className="font-display text-2xl font-semibold text-white">
-          MottainAI
+      {/* Light bar: the wordmark is navy on transparent, so it needs a light
+          ground; the navy stripe keeps the brand color. */}
+      <header className="border-b-4 border-brand-deep bg-white px-4 py-1 sm:px-5">
+        <h1>
+          <Image
+            src="/mottainai.png"
+            alt="MottainAI — less leftovers, more good food"
+            width={240}
+            height={80}
+            loading="eager"
+            className="h-16 w-auto sm:h-20"
+          />
         </h1>
       </header>
       <main className="grid flex-1 grid-cols-1 gap-4 p-4 md:grid-cols-2 md:gap-6 md:p-6">

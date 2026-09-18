@@ -59,22 +59,22 @@ Operators need to understand the scanner state and the result of each tray quick
   - Commit: `b622cb0` (`feat(ui): establish scan-first design foundation`).
   - RDD: disabled/unmanaged.
 
-- [ ] **UI-02 — Rebuild the capture workspace**
+- [x] **UI-02 — Rebuild the capture workspace**
   - Make live scanning the primary operational stage.
   - Redesign upload/camera mode selection, camera controls, active states, calibration feedback, success feedback, and recovery actions.
   - Preserve camera, upload, auto-detect, and analysis behavior.
   - Checks: `npm run lint`, `npm run build`, browser camera/upload state review.
-  - Evidence: pending.
-  - Commit: pending.
+  - Evidence: `npm run lint` passed; `npm run build` passed; upload/camera state markup reviewed; camera runtime remains pending physical-device verification.
+  - Commit: `87b3f5a` (`feat(scanner): rebuild capture workspace`).
   - RDD: disabled/unmanaged.
 
-- [ ] **UI-03 — Rebuild results, recommendations, and scan history**
+- [x] **UI-03 — Rebuild results, recommendations, and scan history**
   - Create immediate scan-result feedback beside the capture workspace.
   - Move analytics, recommendation, and history into a clear secondary hierarchy.
   - Redesign empty, error, single-scan, and populated states.
   - Checks: `npm run lint`, `npm run build`, browser state review with representative data where possible.
-  - Evidence: pending.
-  - Commit: pending.
+  - Evidence: `npm run lint` passed; `npm run build` passed; empty, single, populated, and error mock states rendered; error state verified at 1440×900 in `.impeccable/review/error-desktop.png`.
+  - Commit: `24a2dc1` (`feat(results): surface immediate scan feedback`).
   - RDD: disabled/unmanaged.
 
 - [ ] **UI-04 — Responsive, accessibility, and visual finish**
@@ -83,6 +83,15 @@ Operators need to understand the scanner state and the result of each tray quick
   - Run the Impeccable detector once over changed UI targets.
   - Perform one batched desktop/mobile inspection, one fix batch, and at most one confirmation round.
   - Checks: `npm run lint`, `npm run build`, detector, desktop capture, mobile capture.
+  - Evidence: pending.
+  - Commit: pending.
+  - RDD: disabled/unmanaged.
+
+- [ ] **UI-05 — Add deterministic design preview scenarios**
+  - Provide development-only mock states for empty, successful, populated-history, and error views.
+  - Keep preview data deterministic and prevent preview controls from rendering in production.
+  - Use the mocks for browser captures without camera access or external vision-provider calls.
+  - Checks: `npm run lint`, `npm run build`, preview state browser review.
   - Evidence: pending.
   - Commit: pending.
   - RDD: disabled/unmanaged.
@@ -96,6 +105,7 @@ Operators need to understand the scanner state and the result of each tray quick
 - The approved warm-paper system is consistently applied with one filled blue primary action per context, hairline cards, flat accent surfaces, and restrained motion.
 - The interface works at desktop and mobile widths without clipped controls or hidden content.
 - Existing capture and analysis behavior remains functional.
+- Developers can inspect representative UI states locally without a camera or external API calls.
 - All applicable checks and any skipped/unavailable checks are recorded honestly.
 
 ## Progress
@@ -103,7 +113,9 @@ Operators need to understand the scanner state and the result of each tray quick
 - Feature authorized and visual direction confirmed.
 - Existing UI, repository stack, Next.js guidance, RDD mode, and available checks inspected.
 - UI-01 completed: product truth, code-first configuration, direction contract, design tokens, typography, page shell, and scan-first workspace grid are in place.
+- UI-02 completed: capture controls and scanner states were rebuilt while preserving camera/upload behavior.
+- UI-03 completed: the latest result now fills the scanner-side rail; recommendations and history sit below; analysis errors no longer create an empty grid column.
 
 ## Next step
 
-Complete and verify UI-02, then continue through the remaining work units on the same feature branch.
+Complete UI-05 preview integration, then run UI-04 responsive, accessibility, detector, and finish-review work.

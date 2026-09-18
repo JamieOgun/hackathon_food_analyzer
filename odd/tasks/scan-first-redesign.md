@@ -84,7 +84,7 @@ Operators need to understand the scanner state and the result of each tray quick
   - Perform one batched desktop/mobile inspection, one fix batch, and at most one confirmation round.
   - Checks: `npm run lint`, `npm run build`, detector, desktop capture, mobile capture.
   - Evidence: Impeccable detector returned `[]`; `npm run lint` and `npm run build` passed after the finish-review fix; desktop (`1440×900`) and mobile (`390×844`) captures were inspected at `.impeccable/review/desktop.png` and `.impeccable/review/mobile.png`; the fresh finish review returned `SHIP`; stale `aria-controls` references were removed; `DESIGN.md` and `.impeccable/design.json` document the shipped system. Physical-camera smoke testing remains unavailable in this environment. The provenance scan passed for the generated tray mock and reported only the pre-existing `public/mottainai.png` logo.
-  - Commit: pending final work-unit commit.
+  - Commit: `49d6786` (`fix(ui): finalize accessible scan experience`).
   - RDD: disabled/unmanaged.
 
 - [x] **UI-05 — Add deterministic design preview scenarios**
@@ -120,4 +120,4 @@ Operators need to understand the scanner state and the result of each tray quick
 
 ## Next step
 
-Commit the final verification evidence, then prepare the feature branch for pull-request delivery.
+Prepare the feature branch for pull-request delivery.

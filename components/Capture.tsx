@@ -29,34 +29,34 @@ const PHASE_UI: Record<
   { label: string; ring: string; dot: string }
 > = {
   calibrating: {
-    label: "Learning empty surface — keep the area clear",
-    ring: "ring-stone-400",
-    dot: "bg-stone-400",
+    label: "Learning the clear surface — keep the area clear",
+    ring: "ring-[#94a3b8]",
+    dot: "bg-[#64748b]",
   },
   empty: {
-    label: "Waiting for a tray",
-    ring: "ring-stone-400",
-    dot: "bg-stone-400",
+    label: "Ready for a tray",
+    ring: "ring-[#4d9b6a]",
+    dot: "bg-[#278653]",
   },
   moving: {
     label: "Movement detected",
-    ring: "ring-sky-400",
-    dot: "bg-sky-400",
+    ring: "ring-[#2584aa]",
+    dot: "bg-[#2584aa]",
   },
   settling: {
-    label: "Tray detected — holding still…",
-    ring: "ring-amber-400",
-    dot: "bg-amber-400",
+    label: "Tray detected — hold still",
+    ring: "ring-[#c88a17]",
+    dot: "bg-[#c88a17]",
   },
   analyzing: {
-    label: "Analyzing tray…",
-    ring: "ring-violet-500",
-    dot: "bg-violet-500 animate-pulse",
+    label: "Analyzing tray",
+    ring: "ring-[#5964c5]",
+    dot: "bg-[#5964c5] motion-safe:animate-pulse",
   },
   done: {
-    label: "Logged — swap in the next tray",
-    ring: "ring-emerald-500",
-    dot: "bg-emerald-500",
+    label: "Scan logged — clear the surface",
+    ring: "ring-[#278653]",
+    dot: "bg-[#278653]",
   },
 };
 
@@ -112,6 +112,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
   }, []);
 
   const refreshCameras = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) return [];
     const all = await navigator.mediaDevices.enumerateDevices();
     const cams = all.filter((d) => d.kind === "videoinput");
     setCameras(cams);
@@ -185,7 +186,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
 
   // Pick up an iPhone that connects (or drops) after the camera started.
   useEffect(() => {
-    if (mode !== "camera") return;
+    if (mode !== "camera" || !navigator.mediaDevices?.addEventListener) return;
     const onChange = () => void refreshCameras();
     navigator.mediaDevices.addEventListener("devicechange", onChange);
     return () =>
@@ -193,6 +194,14 @@ export default function Capture({ onImage, busy }: CaptureProps) {
   }, [mode, refreshCameras]);
 
   useEffect(() => stopCamera, [stopCamera]);
+
+  // Preview URLs are browser-owned resources. Revoke each prior preview so
+  // repeated scans do not retain every captured blob in memory.
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   const handleModeChange = (next: Mode) => {
     if (next === mode) return;
@@ -204,7 +213,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
 
   const handleFile = (file: File) => {
     setPreviewUrl(URL.createObjectURL(file));
-    onImage(file, "upload");
+    void onImage(file, "upload");
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -302,58 +311,122 @@ export default function Capture({ onImage, busy }: CaptureProps) {
   const ui = PHASE_UI[phase];
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-2">
+    <div className="flex min-w-0 flex-col gap-4 text-charcoal">
+      <div
+        className="grid min-w-0 grid-cols-2 gap-1 rounded-[12px] border border-line bg-paper-deep p-1"
+        role="group"
+        aria-label="Capture mode"
+      >
         <button
           type="button"
+          aria-pressed={mode === "upload"}
+          aria-controls="upload-panel"
           onClick={() => handleModeChange("upload")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "upload"
-              ? "bg-brand text-white"
-              : "bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300"
+              ? "min-h-11 bg-white text-brand"
+              : "min-h-11 text-stone hover:bg-white/70 hover:text-charcoal"
           }`}
         >
           Upload
         </button>
         <button
           type="button"
+          aria-pressed={mode === "camera"}
+          aria-controls="camera-panel"
           onClick={() => handleModeChange("camera")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "camera"
-              ? "bg-brand text-white"
-              : "bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300"
+              ? "min-h-11 bg-white text-brand"
+              : "min-h-11 text-stone hover:bg-white/70 hover:text-charcoal"
           }`}
         >
           Live camera
         </button>
       </div>
 
+      <div
+        className="flex min-h-11 items-center gap-3 rounded-[8px] border border-line bg-paper px-3 py-2.5 text-sm font-medium text-graphite"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span
+          className="h-2.5 w-2.5 shrink-0 rounded-full bg-stone"
+          aria-hidden="true"
+        />
+        <span>
+          {busy
+            ? "Sending the captured tray for analysis"
+            : mode === "camera"
+              ? streaming
+                ? ui.label
+                : "Starting camera"
+              : previewUrl
+                ? "Photo ready to review"
+                : "Ready for a photo"}
+        </span>
+      </div>
+
       {cameraError && (
-        <p className="text-sm text-red-600 dark:text-red-400">{cameraError}</p>
+        <div
+          role="alert"
+          className="rounded-[8px] border border-danger/30 bg-danger-tint px-4 py-3 text-sm text-danger"
+        >
+          {cameraError}
+        </div>
       )}
 
       {mode === "upload" && (
-        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-stone-300 p-8 text-center text-sm text-stone-500 hover:border-brand dark:border-stone-700 dark:text-stone-400">
-          <span>Click to choose a plate photo</span>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileInput}
-            disabled={busy}
-          />
-        </label>
+        <div id="upload-panel" aria-label="Upload a tray photo">
+          <label className="group relative flex min-h-[260px] cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px] border-2 border-dashed border-stone/45 bg-paper px-6 py-10 text-center text-sm text-stone transition-colors motion-reduce:transition-none hover:border-brand hover:bg-sky-tint focus-within:border-brand">
+            <span className="text-base font-semibold text-ink">
+              {previewUrl
+                ? "Choose a different tray photo"
+                : "Choose a tray photo"}
+            </span>
+            <span>
+              {previewUrl
+                ? "The last capture is shown below."
+                : "JPG, PNG, or HEIC. Use one tray in view."}
+            </span>
+            {previewUrl && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element -- blob: preview URL, next/image can't optimize it */}
+                <img
+                  src={previewUrl}
+                  alt="Last captured tray"
+                  className="mt-3 h-32 w-full max-w-xs object-cover"
+                />
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={handleFileInput}
+              disabled={busy}
+            />
+          </label>
+        </div>
       )}
 
       {mode === "camera" && (
-        <div className="flex flex-col gap-3">
+        <div
+          id="camera-panel"
+          aria-label="Live camera capture"
+          className="flex flex-col gap-4"
+        >
           {cameras.length > 0 && (
-            <label className="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-300">
-              Camera
+            <label
+              htmlFor="camera-select"
+              className="flex min-h-11 items-center gap-2 text-sm font-semibold text-[#334155]"
+            >
+              Camera source
               <select
+                id="camera-select"
                 value={cameraId}
                 onChange={(e) => handleCameraChange(e.target.value)}
-                className="min-w-0 flex-1 rounded-md border border-stone-300 bg-surface px-2 py-1.5 text-sm dark:border-stone-700"
+                className="min-h-11 min-w-0 flex-1 rounded-[8px] border border-line bg-white px-3 py-2 text-sm text-charcoal"
               >
                 {cameras.map((c, i) => (
                   <option key={c.deviceId || i} value={c.deviceId}>
@@ -370,26 +443,36 @@ export default function Capture({ onImage, busy }: CaptureProps) {
           >
             <video
               ref={videoRef}
-              className="w-full bg-black"
+              className="aspect-[4/3] w-full bg-midnight object-cover"
               muted
               playsInline
+              aria-label="Live tray camera preview"
             />
+            {!streaming && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-midnight px-6 text-center text-white">
+                <p className="text-sm font-semibold">
+                  Connecting to the camera
+                </p>
+                <p className="max-w-xs text-xs leading-5 text-[#c7d0dd]">
+                  Allow camera access, then place one tray under the lens.
+                </p>
+              </div>
+            )}
             {streaming && autoDetect && (
-              <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+              <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full bg-midnight/95 px-3 py-2 text-xs font-semibold text-white">
                 <span className={`h-2 w-2 rounded-full ${ui.dot}`} />
                 {ui.label}
               </div>
             )}
             {streaming && autoDetect && lastLive?.kind === "no_plate" && (
-              <div className="absolute inset-x-2 bottom-2 rounded-md bg-black/75 px-3 py-2 text-xs text-stone-200">
-                <span className="font-semibold text-white">
-                  Skipped — no plate seen.
-                </span>{" "}
-                {lastLive.reasoning}
+              <div className="absolute inset-x-3 bottom-3 border border-[#f3d4cc] bg-[#fff8f5] px-3 py-2.5 text-xs text-[#7d3328]">
+                <span className="font-semibold">No plate found.</span>{" "}
+                {lastLive.reasoning ??
+                  "Clear the surface and try the next tray."}
               </div>
             )}
             {streaming && autoDetect && lastLive?.kind === "scan" && (
-              <div className="absolute inset-x-2 bottom-2 rounded-md bg-black/75 px-3 py-2 text-sm text-white">
+              <div className="absolute inset-x-3 bottom-3 border border-[#b9d6c5] bg-[#f1fbf4] px-3 py-2.5 text-sm text-[#205c3b]">
                 <span className="font-semibold">{lastLive.scan.dish_name}</span>{" "}
                 · {BUCKET_LABEL[lastLive.scan.remaining_bucket]}
                 {lastLive.scan.yen_wasted != null &&
@@ -398,21 +481,21 @@ export default function Capture({ onImage, busy }: CaptureProps) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-300">
+          <div className="flex flex-col gap-3 border-t border-[#e0d9cf] pt-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <label className="flex min-h-11 items-center gap-3 text-sm font-medium text-[#475467]">
               <input
                 type="checkbox"
                 checked={autoDetect}
                 onChange={(e) => setAutoDetect(e.target.checked)}
-                className="accent-brand"
+                className="h-5 w-5 accent-[#1b61d1]"
               />
-              Auto-detect trays
+              Auto-detect settled trays
             </label>
             <button
               type="button"
               onClick={() => void analyzeCurrentFrame()}
               disabled={!streaming || busy}
-              className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#c52f37] disabled:opacity-50"
+              className="min-h-11 rounded-[9px] bg-[#1b61d1] px-4 py-2 text-sm font-semibold text-white transition-colors motion-reduce:transition-none hover:bg-[#164fae] disabled:cursor-not-allowed disabled:bg-[#aeb7c5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1b61d1]"
             >
               Analyze now
             </button>
@@ -421,7 +504,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
                 type="button"
                 onClick={recalibrate}
                 disabled={!streaming}
-                className="rounded-md bg-stone-100 px-3 py-2 text-sm font-medium text-stone-600 disabled:opacity-50 dark:bg-stone-800 dark:text-stone-300"
+                className="min-h-11 rounded-[9px] border border-[#c8c1b7] bg-white px-3 py-2 text-sm font-semibold text-[#475467] transition-colors motion-reduce:transition-none hover:bg-[#f7f3ed] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1b61d1]"
               >
                 Re-learn empty surface
               </button>
@@ -432,15 +515,15 @@ export default function Capture({ onImage, busy }: CaptureProps) {
 
       <canvas ref={canvasRef} className="hidden" />
 
-      {previewUrl && (
-        <div className="flex items-center gap-3">
+      {previewUrl && mode === "camera" && (
+        <div className="flex items-center gap-3 border-t border-[#e0d9cf] pt-4">
           {/* eslint-disable-next-line @next/next/no-img-element -- blob: preview URL, next/image can't optimize it */}
           <img
             src={previewUrl}
             alt="Last captured plate"
-            className="h-20 w-20 rounded-md object-cover"
+            className="h-20 w-20 rounded-[10px] object-cover"
           />
-          <span className="text-sm text-stone-500 dark:text-stone-400">
+          <span className="text-sm text-[#667085]">
             {busy ? "Analyzing…" : "Last capture"}
           </span>
         </div>

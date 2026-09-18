@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Capture from "@/components/Capture";
+import Capture, { type AnalyzeOutcome } from "@/components/Capture";
 import ResultsPanel from "@/components/ResultsPanel";
 import { buildRecommendations } from "@/lib/agent";
 import { SEED_SCANS } from "@/lib/seed";
@@ -14,7 +14,10 @@ export default function Home() {
 
   const recommendations = useMemo(() => buildRecommendations(scans), [scans]);
 
-  async function handleImage(file: File, source: "upload" | "camera") {
+  async function handleImage(
+    file: File,
+    source: "upload" | "camera",
+  ): Promise<AnalyzeOutcome> {
     setBusy(true);
     setError(null);
     try {
@@ -28,12 +31,21 @@ export default function Home() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
+        // Live camera triggers on anything that settles in view; a frame
+        // with no plate is expected there, not an error worth shouting about.
+        if (body.no_plate && source === "camera")
+          return { kind: "no_plate", reasoning: body.reasoning ?? null };
         throw new Error(body.error ?? `Request failed (${res.status})`);
       }
-      const result: ScanResult = await res.json();
+      const result: ScanResult = {
+        ...(await res.json()),
+        image_url: URL.createObjectURL(file),
+      };
       setScans((prev) => [...prev, result]);
+      return { kind: "scan", scan: result };
     } catch (err) {
       setError((err as Error).message);
+      return { kind: "error" };
     } finally {
       setBusy(false);
     }

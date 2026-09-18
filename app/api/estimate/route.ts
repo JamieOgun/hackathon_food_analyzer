@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { estimatePlate } from "@/lib/vision";
+import { sanitizeDetections } from "@/lib/vision/shared";
 import { findMenuItem } from "@/lib/menu";
 import { BUCKET_FRACTION, type ScanResult } from "@/lib/types";
 
-export const maxDuration = 20;
+export const maxDuration = 40;
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -28,11 +29,27 @@ export async function POST(request: Request) {
     );
   }
 
+  if (estimate.plate_present === false) {
+    console.info("[estimate] skipped, no plate:", estimate.reasoning);
+    return NextResponse.json(
+      {
+        error: `No plate detected in the image${
+          estimate.reasoning ? ` — ${estimate.reasoning}` : ""
+        }`,
+        no_plate: true,
+        reasoning: estimate.reasoning ?? null,
+      },
+      { status: 422 },
+    );
+  }
+
   const menuItem = findMenuItem(estimate.dish_name);
   const remaining_fraction = BUCKET_FRACTION[estimate.remaining_bucket];
 
   const result: ScanResult = {
     ...estimate,
+    reasoning: estimate.reasoning?.trim() || undefined,
+    detections: sanitizeDetections(estimate.detections),
     id: crypto.randomUUID(),
     source,
     timestamp: new Date().toISOString(),

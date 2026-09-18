@@ -27,7 +27,7 @@ export default function AnnotatedImage({
   showLabels = true,
 }: AnnotatedImageProps) {
   return (
-    <div className="relative w-full overflow-hidden rounded-md bg-black">
+    <div className="relative w-full self-start overflow-hidden rounded-md bg-black">
       {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL, next/image can't optimize it */}
       <img src={src} alt={alt} className="block w-full" />
       {detections.map((d, i) => {

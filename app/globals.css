@@ -1,35 +1,144 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f7f4; /* sage-white */
-  --foreground: #292524; /* stone-800 */
-  --surface: #ffffff;
+  --paper-warmth: #f6f5f4;
+  --paper-deep: #ece9e5;
+  --pure-white: #ffffff;
+  --ink-black: #0b0b0b;
+  --charcoal: #24211f;
+  --stone: #706b67;
+  --graphite: #5e5955;
+  --line: rgb(11 11 11 / 9%);
+  --notion-blue: #0075de;
+  --notion-blue-hover: #0068c7;
+  --sky-tint: #e6f3fe;
+  --marigold: #ffb110;
+  --coral: #f64932;
+  --sky-wash: #62aef0;
+  --midnight-ink: #02093a;
+  --success: #16784a;
+  --success-tint: #e7f5ed;
+  --danger: #b42318;
+  --danger-tint: #fff0ee;
+  --surface: var(--pure-white);
+  --background: var(--paper-warmth);
+  --foreground: var(--ink-black);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-brand: #e0383f; /* vermilion (mottainai sign) — primary actions */
-  --color-brand-deep: #11315d; /* poster navy — header, figures, ink */
-  --color-savings: #059669; /* emerald-600 — money kept */
-  --color-fresh: #a3e635; /* lime-400 — badges, ≤5% of pixels */
-  --color-waste: #f5a623; /* poster marigold — food/money lost */
+  --color-paper: var(--paper-warmth);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink-black);
+  --color-charcoal: var(--charcoal);
+  --color-stone: var(--stone);
+  --color-graphite: var(--graphite);
+  --color-line: var(--line);
+  --color-brand: var(--notion-blue);
+  --color-brand-hover: var(--notion-blue-hover);
+  --color-sky-tint: var(--sky-tint);
+  --color-marigold: var(--marigold);
+  --color-coral: var(--coral);
+  --color-sky-wash: var(--sky-wash);
+  --color-midnight: var(--midnight-ink);
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-waste: var(--marigold);
+  --color-brand-deep: var(--midnight-ink);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-editorial: var(--font-source-serif), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-card: 12px;
+  --radius-control: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0e131c; /* navy-charcoal */
-    --foreground: #e7e5e4; /* stone-200 */
-    --surface: #151c28;
-  }
+* {
+  border-color: var(--line);
+}
+
+html {
+  min-height: 100%;
+  background: var(--paper-warmth);
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  min-height: 100%;
+  background: var(--paper-warmth);
+  color: var(--ink-black);
   font-family: var(--font-sans);
+  font-feature-settings:
+    "lnum",
+    "locl" 0;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+label,
+select,
+input[type="checkbox"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--marigold);
+  color: var(--ink-black);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--notion-blue) 34%, transparent);
+  outline-offset: 3px;
+}
+
+* {
+  scrollbar-color: rgb(11 11 11 / 26%) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  background: rgb(11 11 11 / 25%);
+  background-clip: padding-box;
+}
+
+@keyframes receipt-settle {
+  from {
+    opacity: 0.45;
+    transform: translateY(8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.receipt-settle {
+  animation: receipt-settle 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

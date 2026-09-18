@@ -42,18 +42,18 @@ export default function ScanLog({ scans }: ScanLogProps) {
             return (
               <li
                 key={scan.id}
-                className="grid grid-cols-[7rem_1fr] gap-3 rounded-lg border border-stone-200 p-3 sm:grid-cols-[minmax(0,11rem)_1fr] dark:border-stone-800"
+                className={`grid gap-3 rounded-lg border border-stone-200 p-3 dark:border-stone-800 ${
+                  scan.image_url
+                    ? "grid-cols-[7rem_1fr] sm:grid-cols-[minmax(0,11rem)_1fr]"
+                    : "grid-cols-1"
+                }`}
               >
-                {scan.image_url ? (
+                {scan.image_url && (
                   <AnnotatedImage
                     src={scan.image_url}
                     alt={`Scanned ${scan.dish_name}`}
                     detections={scan.detections ?? []}
                   />
-                ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-md bg-stone-100 text-xs text-stone-400 dark:bg-stone-800">
-                    Sample scan — no image
-                  </div>
                 )}
 
                 <div className="flex min-w-0 flex-col gap-2 text-sm">
@@ -82,18 +82,16 @@ export default function ScanLog({ scans }: ScanLogProps) {
                     </span>
                   </div>
 
-                  <div>
-                    <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
-                      Reasoning
-                    </h4>
-                    <p className="text-stone-700 dark:text-stone-300">
-                      {scan.reasoning ?? (
-                        <span className="text-stone-400">
-                          No reasoning recorded for this scan.
-                        </span>
-                      )}
-                    </p>
-                  </div>
+                  {scan.reasoning && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                        Reasoning
+                      </h4>
+                      <p className="text-stone-700 dark:text-stone-300">
+                        {scan.reasoning}
+                      </p>
+                    </div>
+                  )}
 
                   {(leftovers.length > 0 || scan.visible_items.length > 0) && (
                     <div>

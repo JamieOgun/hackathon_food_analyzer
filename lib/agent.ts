@@ -7,7 +7,7 @@ const WASTE_THRESHOLD = 0.2;
 /**
  * Assumed covers/week for a dish, used only to turn a handful of live scans
  * into a relative weekly-¥ figure for the demo. Disclosed, not measured —
- * there's no real order volume behind this build (see docs/hackathon-plan.md).
+ * there's no real order volume behind this build yet.
  */
 const ASSUMED_WEEKLY_COVERS = 50;
 

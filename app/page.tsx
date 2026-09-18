@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import Capture, { type AnalyzeOutcome } from "@/components/Capture";
 import ResultsPanel from "@/components/ResultsPanel";
 import { buildRecommendations } from "@/lib/agent";
+import { useMottainaiVoice } from "@/lib/useMottainaiVoice";
 import type { ScanResult } from "@/lib/types";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const voice = useMottainaiVoice();
   const recommendations = useMemo(() => buildRecommendations(scans), [scans]);
 
   async function handleImage(
@@ -42,6 +44,8 @@ export default function Home() {
         image_url: URL.createObjectURL(file),
       };
       setScans((prev) => [...prev, result]);
+      // Praise a clean plate; otherwise scold, angrier the more is left.
+      void voice.say(result.remaining_bucket);
       return { kind: "scan", scan: result };
     } catch (err) {
       setError((err as Error).message);

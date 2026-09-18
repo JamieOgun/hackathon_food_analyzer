@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { estimatePlate } from "@/lib/gemini";
+import { estimatePlate } from "@/lib/vision";
 import { findMenuItem } from "@/lib/menu";
 import { BUCKET_FRACTION, type ScanResult } from "@/lib/types";
 

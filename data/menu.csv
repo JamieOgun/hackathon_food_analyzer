@@ -1,0 +1,9 @@
+dish_id,dish_name,price_yen,food_cost_yen,daypart
+katsu_set,Pork Katsu Set,1200,420,dinner
+salmon_teishoku,Salmon Teishoku,1400,550,lunch
+karaage_don,Karaage Don,950,320,lunch
+oyakodon,Oyakodon,900,300,lunch
+gyudon,Gyudon,850,280,dinner
+tempura_moriawase,Tempura Moriawase,1600,600,dinner
+miso_ramen,Miso Ramen,1100,380,lunch
+hamburg_steak,Hamburg Steak Set,1300,480,dinner

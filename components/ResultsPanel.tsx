@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 import ScanLog from "@/components/ScanLog";
-import {
-  BUCKET_LABEL,
-  type Recommendation,
-  type ScanResult,
-} from "@/lib/types";
+import { BUCKET_LABEL, type Recommendation, type ScanResult } from "@/lib/types";
 
 type Tab = "overview" | "log";
 
@@ -23,6 +19,7 @@ export default function ResultsPanel({
 }: ResultsPanelProps) {
   const [tab, setTab] = useState<Tab>("overview");
   const totalYenWasted = scans.reduce((sum, s) => sum + (s.yen_wasted ?? 0), 0);
+  const latestScan = scans[scans.length - 1];
 
   const tabClass = (t: Tab) =>
     `-mb-px border-b-2 px-3 py-2 text-sm font-medium ${
@@ -60,6 +57,39 @@ export default function ResultsPanel({
         <ScanLog scans={scans} />
       ) : (
         <>
+          <div>
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+              Latest evaluation
+            </h3>
+            {latestScan ? (
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-4 dark:border-stone-700 dark:bg-stone-900/40">
+                <p className="mb-2 font-semibold text-foreground">
+                  {latestScan.dish_name}
+                </p>
+                <ul className="list-disc space-y-1 pl-5 text-sm text-stone-700 dark:text-stone-300">
+                  <li>
+                    Whole dish leftover: {Math.round(latestScan.remaining_fraction * 100)}%
+                  </li>
+                  <li>
+                    Evaluation confidence: {Math.round(latestScan.confidence * 100)}%
+                  </li>
+                  <li>
+                    Estimated waste: {latestScan.yen_wasted != null
+                      ? `¥${latestScan.yen_wasted.toLocaleString()}`
+                      : "Unavailable — dish not on menu"}
+                  </li>
+                  <li>
+                    Timestamp: {new Date(latestScan.timestamp).toLocaleString("ja-JP")}
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <p className="text-sm text-stone-500 dark:text-stone-400">
+                Upload a dish image to see its evaluation.
+              </p>
+            )}
+          </div>
+
           <div>
             <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
               Top recommendation

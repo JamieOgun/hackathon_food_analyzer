@@ -8,10 +8,13 @@ import {
   withRetry,
 } from "./shared";
 
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
-const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+const MODELS = [
+  process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite",
+  process.env.GEMINI_FALLBACK_MODEL ?? "gemini-3.7-flash",
+];
 
 async function callGemini(
+  model: string,
   imageBase64: string,
   mimeType: string,
 ): Promise<unknown> {
@@ -22,7 +25,8 @@ async function callGemini(
     );
   }
 
-  const res = await fetch(ENDPOINT, {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  const res = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,6 +43,9 @@ async function callGemini(
         },
       ],
       generationConfig: {
+        // Plate evaluation does not need the model's default reasoning depth.
+        // Low keeps interactive uploads within the route's latency budget.
+        thinkingConfig: { thinkingLevel: "low" },
         response_mime_type: "application/json",
         response_schema: {
           type: "object",
@@ -52,7 +59,9 @@ async function callGemini(
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`Gemini API error ${res.status}: ${body.slice(0, 300)}`);
+    throw new Error(
+      `Gemini ${model} API error ${res.status}: ${body.slice(0, 300)}`,
+    );
   }
 
   const data = await res.json();
@@ -68,5 +77,10 @@ export async function estimatePlateGemini(
   imageBase64: string,
   mimeType: string,
 ): Promise<EstimateResult> {
-  return withRetry(() => callGemini(imageBase64, mimeType));
+  let attempt = 0;
+  return withRetry(() => {
+    const model = MODELS[Math.min(attempt, MODELS.length - 1)];
+    attempt += 1;
+    return callGemini(model, imageBase64, mimeType);
+  });
 }

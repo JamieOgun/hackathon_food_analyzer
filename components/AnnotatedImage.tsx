@@ -29,7 +29,7 @@ export default function AnnotatedImage({
 }: AnnotatedImageProps) {
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-[8px] border border-line bg-stone-100 ${className}`}
+      className={`relative w-full self-start overflow-hidden rounded-[8px] border border-line bg-stone-100 ${className}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL, next/image can't optimize it */}
       <img src={src} alt={alt} className="block h-auto w-full object-contain" />

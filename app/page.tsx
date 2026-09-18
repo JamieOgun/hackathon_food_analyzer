@@ -10,6 +10,7 @@ import {
   type MockScanScenarioKey,
 } from "@/lib/mock-scans";
 import type { ScanResult } from "@/lib/types";
+import { useMottainaiVoice } from "@/lib/useMottainaiVoice";
 
 export default function Home() {
   const [scans, setScans] = useState<ScanResult[]>([]);
@@ -18,6 +19,7 @@ export default function Home() {
   const [previewScenario, setPreviewScenario] =
     useState<MockScanScenarioKey | null>(null);
   const scanImageUrls = useRef<string[]>([]);
+  const voice = useMottainaiVoice();
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
@@ -76,6 +78,7 @@ export default function Home() {
         image_url: imageUrl,
       };
       setScans((previous) => [...previous, result]);
+      void voice.say(result.remaining_bucket);
       return { kind: "scan", scan: result };
     } catch (requestError) {
       setError((requestError as Error).message);

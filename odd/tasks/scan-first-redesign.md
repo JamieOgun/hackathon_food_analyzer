@@ -96,6 +96,15 @@ Operators need to understand the scanner state and the result of each tray quick
   - Commit: `32c3c19` (`feat(preview): add hidden deterministic UI states`).
   - RDD: disabled/unmanaged.
 
+- [x] **UI-06 — Integrate the latest main branch**
+  - Merge `origin/main` while preserving the approved scan-first layout and latest-result hierarchy.
+  - Retain upstream resilient vision handling, voice feedback, API routes, menu data, and documentation.
+  - Resolve image/result conflicts without losing null-safe detections, clamped overlays, error placement, or development previews.
+  - Checks: `npm run lint`, `npm run build`, representative development-preview browser review.
+  - Evidence: merged `origin/main` at `00f69de`; retained upstream resilient vision handling, `/api/mottainai`, voice feedback, updated menu/types, and overview documentation; preserved the scan-first shell, null-safe/clamped annotations, development previews, and right-rail error state. `npm run lint` and `npm run build` passed; `?preview=error` was reviewed at `1440×900` in `.impeccable/review/merge-error.png` with no visible mock controls or empty result column. Physical-camera and audio playback smoke tests remain unavailable in this environment.
+  - Commit: pending merge work-unit commit.
+  - RDD: disabled/unmanaged.
+
 ## Acceptance criteria
 
 - The first viewport is unmistakably a scanning workspace rather than a generic dashboard.
@@ -117,7 +126,8 @@ Operators need to understand the scanner state and the result of each tray quick
 - UI-03 completed: the latest result now fills the scanner-side rail; recommendations and history sit below; analysis errors no longer create an empty grid column.
 - UI-04 completed: detector, responsive captures, lint, production build, accessibility follow-up, finish review, and durable design documentation are complete.
 - UI-05 completed: deterministic development previews remain available by query parameter while the visible mock selector is excluded from the product UI.
+- UI-06 completed: the latest `origin/main` behavior is integrated without regressing the approved scan-first UI or error placement.
 
 ## Next step
 
-Prepare the feature branch for pull-request delivery.
+Record the merge commit identity, then prepare the feature branch for pull-request delivery.

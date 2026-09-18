@@ -4,7 +4,8 @@ import { sanitizeDetections } from "@/lib/vision/shared";
 import { findMenuItem } from "@/lib/menu";
 import { BUCKET_FRACTION, type ScanResult } from "@/lib/types";
 
-export const maxDuration = 40;
+// Two vision attempts can each use up to 30 seconds.
+export const maxDuration = 65;
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -23,8 +24,18 @@ export async function POST(request: Request) {
   try {
     estimate = await estimatePlate(base64, mimeType);
   } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[estimate] vision providers failed:", detail);
+    const temporaryFailure =
+      /\b(429|502|503|504)\b|timeout|timed out|aborted|high demand|unavailable/i.test(
+        detail,
+      );
     return NextResponse.json(
-      { error: (err as Error).message },
+      {
+        error: temporaryFailure
+          ? "Image analysis is temporarily busy. Please try the upload again."
+          : "Image analysis failed. Please try another image.",
+      },
       { status: 502 },
     );
   }

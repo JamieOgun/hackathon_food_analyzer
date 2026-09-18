@@ -1,55 +1,43 @@
 # MottainAI
 
-Restaurant plate-waste scanner: snap returned plates, vision models estimate what's left uneaten, and the app prices the waste in yen and recommends portion cuts.
+**Less leftovers, more good food.** A camera looks down on the tray return area. When a tray is set down, MottainAI works out which dish it was and how much was left uneaten. It prices that waste in yen and recommends portion cuts for dishes that keep coming back half-eaten.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## How it works
 
-## Getting Started
+1. **Live camera** (or photo upload): the browser compares small low-resolution frames to spot when a new tray has been set down and stays still. Only then does it send a single frame for analysis, so the cost is one AI call per tray, not one per video frame.
+2. **Vision model** (Claude by default, Gemini optional): identifies the dish from the menu, picks a leftover level (empty / light / half / most / untouched), explains its reasoning, and returns boxes around the plate and each leftover food item.
+3. **Menu join**: `data/menu.csv` supplies each dish's food cost, which converts the leftover level into ¥ wasted.
+4. **Recommendations**: once a dish has 2+ scans averaging ≥20% left, the app suggests a portion cut and estimates the weekly ¥ wasted.
 
-Create a local environment file and add a Gemini API key:
+The **Scan log** tab lists every tray with its annotated image, reasoning, and detected leftovers.
 
-```bash
-cp .env.local.example .env.local
-```
-
-```dotenv
-GEMINI_API_KEY=your_api_key
-```
-
-Gemini 3.5 Flash-Lite is the default image-analysis model. If it fails, the
-same request automatically falls back to Gemini 3.7 Flash. You can override
-them with `GEMINI_MODEL` and `GEMINI_FALLBACK_MODEL`, or opt into the retained
-Claude provider with `VISION_PROVIDER=claude` and `ANTHROPIC_API_KEY`.
-
-Then install dependencies and run the development server:
+## Setup
 
 ```bash
+cp .env.local.example .env.local   # then add ANTHROPIC_API_KEY
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 and choose **Live camera**. On a Mac, an iPhone mounted overhead works as a top-down camera via Continuity Camera. Pick it from the **Camera** dropdown.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+| --- | --- |
+| `VISION_PROVIDER` | `claude` (default) or `gemini` |
+| `ANTHROPIC_API_KEY` / `CLAUDE_VISION_MODEL` | Claude credentials and model (default `claude-sonnet-5`) |
+| `GEMINI_API_KEY` / `GEMINI_MODEL` | Gemini credentials and model |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Key files
 
-## Learn More
+- `components/Capture.tsx`: upload, live camera, camera picker, auto-detect loop
+- `lib/motion.ts`: the on-device check that detects when a tray has settled
+- `app/api/estimate/route.ts`: vision call, menu lookup, waste cost
+- `lib/vision/`: provider adapters and the shared prompt and schema
+- `lib/agent.ts`: portion-cut recommendations
+- `components/ScanLog.tsx`, `components/AnnotatedImage.tsx`: scan history with detection boxes
 
-To learn more about Next.js, take a look at the following resources:
+## Limitations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Scans are kept in browser memory only and are lost on refresh.
+- The weekly ¥ figure assumes 50 servings of each dish per week, because there is no order data yet.
+- Auto-detect expects one tray in view at a time.

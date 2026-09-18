@@ -77,14 +77,14 @@ Operators need to understand the scanner state and the result of each tray quick
   - Commit: `24a2dc1` (`feat(results): surface immediate scan feedback`).
   - RDD: disabled/unmanaged.
 
-- [ ] **UI-04 — Responsive, accessibility, and visual finish**
+- [x] **UI-04 — Responsive, accessibility, and visual finish**
   - Validate desktop and mobile layouts.
   - Verify keyboard focus, labels, contrast, reduced motion, overflow, and loading/error feedback.
   - Run the Impeccable detector once over changed UI targets.
   - Perform one batched desktop/mobile inspection, one fix batch, and at most one confirmation round.
   - Checks: `npm run lint`, `npm run build`, detector, desktop capture, mobile capture.
-  - Evidence: pending.
-  - Commit: pending.
+  - Evidence: Impeccable detector returned `[]`; `npm run lint` and `npm run build` passed after the finish-review fix; desktop (`1440×900`) and mobile (`390×844`) captures were inspected at `.impeccable/review/desktop.png` and `.impeccable/review/mobile.png`; the fresh finish review returned `SHIP`; stale `aria-controls` references were removed; `DESIGN.md` and `.impeccable/design.json` document the shipped system. Physical-camera smoke testing remains unavailable in this environment. The provenance scan passed for the generated tray mock and reported only the pre-existing `public/mottainai.png` logo.
+  - Commit: pending final work-unit commit.
   - RDD: disabled/unmanaged.
 
 - [x] **UI-05 — Add deterministic design preview scenarios**
@@ -93,7 +93,7 @@ Operators need to understand the scanner state and the result of each tray quick
   - Use the mocks for browser captures without camera access or external vision-provider calls.
   - Checks: `npm run lint`, `npm run build`, preview state browser review.
   - Evidence: `npm run lint` passed; `npm run build` passed; `?preview=empty|single|many|error` renders deterministic states only in development; desktop and mobile browser captures confirmed no preview controls are visible.
-  - Commit: pending final work-unit commit.
+  - Commit: `32c3c19` (`feat(preview): add hidden deterministic UI states`).
   - RDD: disabled/unmanaged.
 
 ## Acceptance criteria
@@ -115,8 +115,9 @@ Operators need to understand the scanner state and the result of each tray quick
 - UI-01 completed: product truth, code-first configuration, direction contract, design tokens, typography, page shell, and scan-first workspace grid are in place.
 - UI-02 completed: capture controls and scanner states were rebuilt while preserving camera/upload behavior.
 - UI-03 completed: the latest result now fills the scanner-side rail; recommendations and history sit below; analysis errors no longer create an empty grid column.
+- UI-04 completed: detector, responsive captures, lint, production build, accessibility follow-up, finish review, and durable design documentation are complete.
 - UI-05 completed: deterministic development previews remain available by query parameter while the visible mock selector is excluded from the product UI.
 
 ## Next step
 
-Complete UI-04 finish review and design-system documentation, then prepare the feature branch for pull-request delivery.
+Commit the final verification evidence, then prepare the feature branch for pull-request delivery.

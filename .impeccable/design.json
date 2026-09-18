@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T00:00:00.000Z",
+  "title": "Design System: MottainAI",
+  "extensions": {
+    "colorMeta": {
+      "paper-warm": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#f6f5f4",
+        "tonalRamp": [
+          "#262626",
+          "#454342",
+          "#676563",
+          "#898785",
+          "#aaa8a6",
+          "#c9c7c5",
+          "#e3e1df",
+          "#f6f5f4"
+        ]
+      },
+      "paper-deep": {
+        "role": "neutral",
+        "displayName": "Deep Paper",
+        "canonical": "#ece9e5",
+        "tonalRamp": [
+          "#262321",
+          "#46423f",
+          "#68635f",
+          "#898581",
+          "#aaa5a0",
+          "#c7c2bd",
+          "#ddd8d3",
+          "#ece9e5"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#484848",
+          "#696969",
+          "#8b8b8b",
+          "#adadad",
+          "#cecece",
+          "#e8e8e8",
+          "#ffffff"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "#0b0b0b",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#3d3d3d",
+          "#575757",
+          "#717171",
+          "#8b8b8b",
+          "#a6a6a6",
+          "#c0c0c0"
+        ]
+      },
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal",
+        "canonical": "#24211f",
+        "tonalRamp": [
+          "#24211f",
+          "#3d3937",
+          "#57524f",
+          "#706b68",
+          "#89837f",
+          "#a19b97",
+          "#bab4b0",
+          "#d3ceca"
+        ]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "#706b67",
+        "tonalRamp": [
+          "#292725",
+          "#403c39",
+          "#595450",
+          "#706b67",
+          "#88827e",
+          "#a19b96",
+          "#bab4af",
+          "#d3cec9"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#5e5955",
+        "tonalRamp": [
+          "#252321",
+          "#3b3735",
+          "#4b4744",
+          "#5e5955",
+          "#77716c",
+          "#908a85",
+          "#aaa49f",
+          "#c3beb9"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(11 11 11 / 9%)",
+        "tonalRamp": [
+          "rgb(11 11 11 / 70%)",
+          "rgb(11 11 11 / 55%)",
+          "rgb(11 11 11 / 40%)",
+          "rgb(11 11 11 / 25%)",
+          "rgb(11 11 11 / 16%)",
+          "rgb(11 11 11 / 12%)",
+          "rgb(11 11 11 / 9%)",
+          "rgb(11 11 11 / 5%)"
+        ]
+      },
+      "action-blue": {
+        "role": "primary",
+        "displayName": "Station Cobalt",
+        "canonical": "#0075de",
+        "tonalRamp": [
+          "#001936",
+          "#00366c",
+          "#0053a2",
+          "#0075de",
+          "#2f93e6",
+          "#62b0ed",
+          "#9bcef5",
+          "#d9edfc"
+        ]
+      },
+      "action-blue-hover": {
+        "role": "primary",
+        "displayName": "Deep Cobalt",
+        "canonical": "#0068c7",
+        "tonalRamp": [
+          "#00162b",
+          "#00305b",
+          "#00498b",
+          "#0068c7",
+          "#348ad5",
+          "#61aae4",
+          "#99c9ed",
+          "#d7ebf9"
+        ]
+      },
+      "sky-tint": {
+        "role": "secondary",
+        "displayName": "Sky Tint",
+        "canonical": "#e6f3fe",
+        "tonalRamp": [
+          "#062338",
+          "#0c466d",
+          "#116da2",
+          "#168fcf",
+          "#50abe0",
+          "#8bc6ed",
+          "#bde0f6",
+          "#e6f3fe"
+        ]
+      },
+      "marigold": {
+        "role": "secondary",
+        "displayName": "Marigold",
+        "canonical": "#ffb110",
+        "tonalRamp": [
+          "#3b2200",
+          "#714100",
+          "#a76200",
+          "#d78800",
+          "#ffb110",
+          "#ffc547",
+          "#ffd77f",
+          "#ffefc7"
+        ]
+      },
+      "coral": {
+        "role": "secondary",
+        "displayName": "Coral",
+        "canonical": "#f64932",
+        "tonalRamp": [
+          "#3a0905",
+          "#71140d",
+          "#ab2117",
+          "#d93122",
+          "#f64932",
+          "#f9705d",
+          "#fa9e91",
+          "#fdd9d4"
+        ]
+      },
+      "sky-wash": {
+        "role": "secondary",
+        "displayName": "Sky Wash",
+        "canonical": "#62aef0",
+        "tonalRamp": [
+          "#06233d",
+          "#0b4c84",
+          "#146fac",
+          "#348ed0",
+          "#62aef0",
+          "#83bff4",
+          "#acd5f8",
+          "#dbeeff"
+        ]
+      },
+      "midnight": {
+        "role": "tertiary",
+        "displayName": "Midnight Ink",
+        "canonical": "#02093a",
+        "tonalRamp": [
+          "#02093a",
+          "#11184d",
+          "#22285f",
+          "#34386f",
+          "#4d507f",
+          "#686b91",
+          "#888aa8",
+          "#b2b3c7"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Success Green",
+        "canonical": "#16784a",
+        "tonalRamp": [
+          "#031a0e",
+          "#063920",
+          "#0b582f",
+          "#16784a",
+          "#3c996a",
+          "#69b88d",
+          "#9bd1b2",
+          "#dcefe4"
+        ]
+      },
+      "success-tint": {
+        "role": "neutral",
+        "displayName": "Success Tint",
+        "canonical": "#e7f5ed",
+        "tonalRamp": [
+          "#092318",
+          "#12472e",
+          "#1b7048",
+          "#26945f",
+          "#5eb489",
+          "#8bcba8",
+          "#b8dfc8",
+          "#e7f5ed"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Danger Red",
+        "canonical": "#b42318",
+        "tonalRamp": [
+          "#310603",
+          "#5e0d08",
+          "#86140d",
+          "#b42318",
+          "#c8473d",
+          "#d7736b",
+          "#e4a59f",
+          "#f3d8d5"
+        ]
+      },
+      "danger-tint": {
+        "role": "neutral",
+        "displayName": "Danger Tint",
+        "canonical": "#fff0ee",
+        "tonalRamp": [
+          "#360c08",
+          "#671812",
+          "#96231b",
+          "#c53428",
+          "#db665c",
+          "#e69b95",
+          "#f1c6c2",
+          "#fff0ee"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Station Display",
+        "purpose": "The scan-every-tray promise at the top of the workspace."
+      },
+      "headline": {
+        "displayName": "Operational Headline",
+        "purpose": "Scanner, result, and pattern section headings."
+      },
+      "editorial": {
+        "displayName": "Editorial Support",
+        "purpose": "The single humanizing supporting line beneath the display headline."
+      },
+      "label": {
+        "displayName": "Metric Label",
+        "purpose": "Compact metadata and measurement labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "header-separation",
+        "value": "0 3px 9px rgb(0 0 0 / 0.03)",
+        "purpose": "Subtle separation for the sticky identity bar only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-transition",
+        "value": "160ms ease",
+        "purpose": "Short color/background transitions for controls and affordances."
+      },
+      {
+        "name": "receipt-settle",
+        "value": "320ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Settles a new result receipt into place without theatrical motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Collapse transitions and animation for operators who request reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Station Header",
+      "kind": "nav",
+      "refersTo": "surface-card",
+      "description": "Sticky identity/status strip with the MottainAI mark, station context, and scan count.",
+      "html": "<header class=\"ds-station-header\"><span class=\"ds-wordmark\">MottainAI</span><span class=\"ds-station-context\">Tray return station</span><span class=\"ds-count\">4 scans</span></header>",
+      "css": ".ds-station-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 12px 24px; background: var(--pure-white); border-bottom: 1px solid var(--line); box-shadow: 0 3px 9px rgb(0 0 0 / 0.03); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; color: var(--ink-black); } .ds-wordmark { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: var(--midnight-ink); } .ds-station-context { margin-left: auto; color: var(--stone); font-size: 14px; } .ds-count { border-radius: 9999px; padding: 6px 12px; background: var(--sky-tint); color: var(--notion-blue); font-size: 14px; font-weight: 600; } @media (max-width: 640px) { .ds-station-header { padding-inline: 16px; } .ds-station-context { display: none; } }"
+    },
+    {
+      "name": "Primary Capture Action",
+      "kind": "button",
+      "refersTo": "capture-primary",
+      "description": "Filled cobalt action for an immediate operator intervention such as Analyze now.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Analyze now</button>",
+      "css": ".ds-btn-primary { min-height: 44px; border: 0; border-radius: 9px; padding: 8px 16px; background: var(--notion-blue); color: var(--pure-white); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 160ms ease, transform 160ms ease; } .ds-btn-primary:hover { background: var(--notion-blue-hover); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 3px solid color-mix(in srgb, var(--notion-blue) 34%, transparent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Recovery Action",
+      "kind": "button",
+      "refersTo": "capture-secondary",
+      "description": "Quiet bordered action for recalibration and recovery paths.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Re-learn empty surface</button>",
+      "css": ".ds-btn-secondary { min-height: 44px; border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; background: var(--pure-white); color: var(--graphite); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 160ms ease; } .ds-btn-secondary:hover { background: var(--paper-warmth); } .ds-btn-secondary:focus-visible { outline: 3px solid color-mix(in srgb, var(--notion-blue) 34%, transparent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Capture Mode Tabs",
+      "kind": "chip",
+      "refersTo": "mode-tab-active",
+      "description": "Two-option segmented control that switches between upload fallback and live camera.",
+      "html": "<div class=\"ds-mode-tabs\" role=\"group\" aria-label=\"Capture mode\"><button class=\"ds-mode-tab ds-mode-tab-active\" type=\"button\" aria-pressed=\"true\">Upload</button><button class=\"ds-mode-tab\" type=\"button\" aria-pressed=\"false\">Live camera</button></div>",
+      "css": ".ds-mode-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-deep); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; } .ds-mode-tab { min-height: 44px; border: 0; border-radius: 8px; padding: 6px 12px; background: transparent; color: var(--stone); font-size: 16px; cursor: pointer; transition: background-color 160ms ease, color 160ms ease; } .ds-mode-tab:hover { background: rgb(255 255 255 / 70%); color: var(--charcoal); } .ds-mode-tab-active { background: var(--pure-white); color: var(--notion-blue); } .ds-mode-tab:focus-visible { outline: 3px solid color-mix(in srgb, var(--notion-blue) 34%, transparent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ready Status Chip",
+      "kind": "chip",
+      "refersTo": "status-chip-ready",
+      "description": "Compact semantic status for a scanner that is ready to receive the next tray.",
+      "html": "<span class=\"ds-status-ready\"><span class=\"ds-status-dot\" aria-hidden=\"true\"></span>Ready for next tray</span>",
+      "css": ".ds-status-ready { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; padding: 6px 12px; background: var(--success-tint); color: var(--success); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; } .ds-status-dot { width: 8px; height: 8px; border-radius: 9999px; background: var(--success); }"
+    },
+    {
+      "name": "Capture Dropzone",
+      "kind": "custom",
+      "refersTo": "capture-dropzone",
+      "description": "Large dashed upload target that keeps the photo fallback explicit and calm.",
+      "html": "<label class=\"ds-dropzone\"><strong>Choose a tray photo</strong><span>JPG, PNG, or HEIC. Use one tray in view.</span><input type=\"file\" accept=\"image/*\" /></label>",
+      "css": ".ds-dropzone { display: flex; min-height: 260px; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 2px dashed color-mix(in srgb, var(--stone) 45%, transparent); border-radius: 12px; padding: 40px 24px; background: var(--paper-warmth); color: var(--stone); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; font-size: 14px; text-align: center; cursor: pointer; transition: border-color 160ms ease, background-color 160ms ease; } .ds-dropzone:hover, .ds-dropzone:focus-within { border-color: var(--notion-blue); background: var(--sky-tint); } .ds-dropzone strong { color: var(--ink-black); font-size: 16px; } .ds-dropzone input { position: absolute; width: 1px; height: 1px; opacity: 0; }"
+    },
+    {
+      "name": "Latest Result Rail",
+      "kind": "card",
+      "refersTo": "surface-card",
+      "description": "Receipt-like latest result surface for dish, waste, confidence, reasoning, and in-rail errors.",
+      "html": "<section class=\"ds-result-rail\" aria-live=\"polite\"><div class=\"ds-result-heading\"><div><h2>Latest scan</h2><p>Immediate feedback for the tray at your station.</p></div><time>09:13 AM</time></div><div class=\"ds-result-error\" role=\"alert\"><strong>The scan could not be completed.</strong><span>Retry the scan or switch capture modes.</span></div><p class=\"ds-result-placeholder\">Ready for the first tray</p></section>",
+      "css": ".ds-result-rail { display: flex; min-width: 0; flex-direction: column; gap: 20px; border: 1px solid var(--line); border-radius: 12px; padding: 20px; background: var(--pure-white); color: var(--ink-black); font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; } .ds-result-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); } .ds-result-heading h2 { margin: 0; color: var(--midnight-ink); font-size: 20px; letter-spacing: -0.02em; } .ds-result-heading p, .ds-result-heading time { margin: 4px 0 0; color: var(--stone); font-size: 14px; } .ds-result-error { display: flex; flex-direction: column; gap: 4px; border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); border-radius: 8px; padding: 12px 16px; background: var(--danger-tint); color: var(--danger); font-size: 14px; line-height: 1.5; } .ds-result-placeholder { margin: 0; border: 1px dashed color-mix(in srgb, var(--stone) 40%, transparent); border-radius: 12px; padding: 24px 20px; background: var(--paper-warmth); color: var(--midnight-ink); font-weight: 600; }"
+    },
+    {
+      "name": "Detection Image",
+      "kind": "custom",
+      "refersTo": "surface-card",
+      "description": "Evidence image with thin semantic detection boxes for plate/tray and leftover food.",
+      "html": "<div class=\"ds-detection-image\"><div class=\"ds-plate-box\"><span>plate</span></div><div class=\"ds-leftover-box\"><span>leftover</span></div></div>",
+      "css": ".ds-detection-image { position: relative; min-height: 180px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-deep); } .ds-plate-box, .ds-leftover-box { position: absolute; border-radius: 4px; } .ds-plate-box { inset: 18% 14% 16% 12%; border: 1px dashed var(--success); } .ds-leftover-box { inset: 42% 28% 22% 34%; border: 1px solid var(--marigold); background: rgb(255 177 16 / 15%); } .ds-plate-box span, .ds-leftover-box span { position: absolute; top: -18px; left: 0; padding: 1px 4px; background: var(--success); color: var(--pure-white); font-size: 10px; font-weight: 600; } .ds-leftover-box span { background: var(--marigold); color: var(--midnight-ink); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Inspection Bench",
+    "overview": "MottainAI is an Operate-mode instrument for the tray-return station, not a marketing dashboard. Its visual language turns a potentially hectic handoff into a calm, repeatable bench routine: warm paper under the work, white hairline surfaces for the active tools, and one unmistakable blue action when the operator needs to intervene. The implementation and the shipped desktop/mobile rasters are the source of truth; there is no approved external comp to imitate.\n\nThe system is compact and workmanlike. Inter carries the operational UI, while Source Serif 4 adds a human editorial note to the short supporting message under the headline. Tonal color fields identify ready, analyzing, success, warning, and error states without turning the station into a rainbow. Depth comes from paper-to-surface contrast and hairline borders, not floating cards or decorative chrome.",
+    "keyCharacteristics": [
+      "Warm-paper canvas with white, flat, hairline containers.",
+      "Scanner-first asymmetric workspace: camera/capture occupies two-thirds on desktop; the latest result occupies the right rail.",
+      "Cobalt is the sole filled primary action; state accents stay sparse and semantic.",
+      "Immediate result feedback is a receipt-like rail; analysis errors remain inside that rail.",
+      "Mobile stacks the same sequence: scanner, action/state, latest result, then patterns/history."
+    ],
+    "rules": [
+      {
+        "name": "The Warm Paper Rule",
+        "body": "Keep the station grounded on warm paper; white surfaces are tools laid on top of it, never glossy floating objects.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Action Rule",
+        "body": "Use Station Cobalt for the action the operator should take next. Do not compete with it using multiple filled button colors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Workhorse Type Rule",
+        "body": "Keep operational labels in Inter; reserve Source Serif 4 for the single supporting editorial line, not controls or status copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The Early-Wrap Rule",
+        "body": "Let the display promise wrap naturally on narrow screens rather than shrinking it into a poster-like single line.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Do not add card shadows, gradients, glass, or decorative chrome; use tonal layering, borders, and state fields to communicate hierarchy.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do make the scanner and its next action unmistakably primary in every responsive layout.",
+      "Do use Warm Paper, Pure White, hairlines, and flat tonal fields before reaching for decoration.",
+      "Do keep cobalt reserved for primary action and active capture emphasis; use semantic accents for status and waste data.",
+      "Do preserve the mobile order of scanner, result rail, then patterns/history.",
+      "Do keep analysis errors in the latest-result rail, where the operator is already looking for feedback.",
+      "Do use the development-only query previews for visual review without adding a visible mock-state selector to the product UI.",
+      "Do support reduced motion; receipt-settle is a restrained 320ms settle, not a persistent animation."
+    ],
+    "donts": [
+      "Don't turn the page into an equal-column analytics dashboard or let patterns outrank the current scan.",
+      "Don't add gradients, glassmorphism, decorative chrome, or content shadows.",
+      "Don't use multiple competing filled action colors.",
+      "Don't expose query-only preview fixtures as a production control or imply that scan results persist beyond the browser tab.",
+      "Don't move capture errors into a separate lower row; the result rail owns analysis feedback.",
+      "Don't fabricate a canonical approved comp: the shipped code and finish-review rasters are the visual authority until a new direction is explicitly chosen."
+    ]
+  }
+}

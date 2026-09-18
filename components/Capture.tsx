@@ -320,7 +320,6 @@ export default function Capture({ onImage, busy }: CaptureProps) {
         <button
           type="button"
           aria-pressed={mode === "upload"}
-          aria-controls="upload-panel"
           onClick={() => handleModeChange("upload")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "upload"
@@ -333,7 +332,6 @@ export default function Capture({ onImage, busy }: CaptureProps) {
         <button
           type="button"
           aria-pressed={mode === "camera"}
-          aria-controls="camera-panel"
           onClick={() => handleModeChange("camera")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "camera"

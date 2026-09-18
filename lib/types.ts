@@ -39,7 +39,7 @@ export interface EstimateResult {
   dish_name: string; // one of the menu's dish names, or "unrecognized"
   remaining_bucket: Bucket;
   visible_items: string[];
-  confidence: number; // 0-1
+  confidence: number; // overall evaluation confidence, 0-1
   /** False when the frame shows no plate/tray (hands, empty surface). */
   plate_present?: boolean;
   /** Short explanation of how the dish and leftover level were judged. */

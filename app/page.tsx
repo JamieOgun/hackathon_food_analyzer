@@ -5,11 +5,10 @@ import { useMemo, useState } from "react";
 import Capture, { type AnalyzeOutcome } from "@/components/Capture";
 import ResultsPanel from "@/components/ResultsPanel";
 import { buildRecommendations } from "@/lib/agent";
-import { SEED_SCANS } from "@/lib/seed";
 import type { ScanResult } from "@/lib/types";
 
 export default function Home() {
-  const [scans, setScans] = useState<ScanResult[]>(SEED_SCANS);
+  const [scans, setScans] = useState<ScanResult[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

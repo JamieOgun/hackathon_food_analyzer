@@ -6,7 +6,22 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Create a local environment file and add a Gemini API key:
+
+```bash
+cp .env.local.example .env.local
+```
+
+```dotenv
+GEMINI_API_KEY=your_api_key
+```
+
+Gemini 3.5 Flash-Lite is the default image-analysis model. If it fails, the
+same request automatically falls back to Gemini 3.7 Flash. You can override
+them with `GEMINI_MODEL` and `GEMINI_FALLBACK_MODEL`, or opt into the retained
+Claude provider with `VISION_PROVIDER=claude` and `ANTHROPIC_API_KEY`.
+
+Then install dependencies and run the development server:
 
 ```bash
 npm run dev

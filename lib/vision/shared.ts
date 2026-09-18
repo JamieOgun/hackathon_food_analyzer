@@ -1,7 +1,7 @@
 import { menuDishNames } from "../menu";
 import type { Detection, EstimateResult } from "../types";
 
-export const TIMEOUT_MS = 18_000;
+export const TIMEOUT_MS = 30_000;
 
 /** JSON-schema-shaped description of the fields we need back, reused as
  * Gemini's response_schema and as the input_schema of Claude's forced tool
@@ -49,12 +49,16 @@ export function buildPrompt(): string {
 Menu dishes — choose the closest match from this exact list, or "unrecognized" if none plausibly match:
 ${dishes.map((d) => `- ${d}`).join("\n")}
 
+Dish distinction: "Burger and Fries" is a patty served inside a sliced bun,
+usually with fries. "Hamburg Steak Set" is a bunless Japanese hambāgu patty
+served as a plated set meal.
+
 Return strict JSON matching the schema:
 - reasoning: 2-4 plain sentences a restaurant manager could read — which visual cues identified the dish (e.g. breaded cutlet, miso bowl, curry sauce) and what remains vs. what was eaten that justifies the leftover level
 - dish_name: exactly one string from the list above, or "unrecognized"
 - remaining_bucket: one of "empty" (nothing left), "light" (a few bites left), "half" (about half left), "most" (mostly untouched), "untouched" (essentially a full portion)
 - visible_items: short list of specific food items still visible on the plate (e.g. "rice", "cabbage garnish"); exclude bones, shells, napkins, lemon wedges, and other non-edible items
-- confidence: your confidence in dish_name, 0 to 1
+- confidence: your overall confidence in both the dish identity and remaining-food evaluation, 0 to 1
 - plate_present: true whenever any plate, bowl, or tray is in view — including a completely clean/empty plate or an empty tray with dishes on it (that is a valid "empty" result). false ONLY when there is no dishware at all (bare surface, just hands, camera covered). When false, use "unrecognized" and "empty" for the other fields and explain what you see in reasoning
 - detections: bounding boxes for the plate/tray (kind "plate") and for each distinct leftover food region (kind "leftover", label = the food item). box is [x_min, y_min, x_max, y_max] as integers 0-1000 relative to image width and height. Return [] when plate_present is false
 

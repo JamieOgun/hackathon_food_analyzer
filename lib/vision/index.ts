@@ -3,10 +3,10 @@ import { estimatePlateClaude } from "./claude";
 import { estimatePlateGemini } from "./gemini";
 
 /**
- * Swappable while Gemini billing is blocked — set VISION_PROVIDER=gemini in
- * .env.local to switch back once ai.studio/projects billing is resolved.
+ * Gemini is the default image-analysis provider. Claude remains available as
+ * an explicit fallback by setting VISION_PROVIDER=claude.
  */
-const PROVIDER = (process.env.VISION_PROVIDER ?? "claude").toLowerCase();
+const PROVIDER = (process.env.VISION_PROVIDER ?? "gemini").toLowerCase();
 
 export function estimatePlate(
   imageBase64: string,

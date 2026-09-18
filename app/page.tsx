@@ -1,23 +1,56 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Capture, { type AnalyzeOutcome } from "@/components/Capture";
 import ResultsPanel from "@/components/ResultsPanel";
 import { buildRecommendations } from "@/lib/agent";
+import {
+  MOCK_SCAN_SCENARIOS,
+  type MockScanScenarioKey,
+} from "@/lib/mock-scans";
 import type { ScanResult } from "@/lib/types";
 
 export default function Home() {
   const [scans, setScans] = useState<ScanResult[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [previewScenario, setPreviewScenario] =
+    useState<MockScanScenarioKey | null>(null);
+  const scanImageUrls = useRef<string[]>([]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const requested = new URLSearchParams(window.location.search).get(
+      "preview",
+    );
+    if (requested && requested in MOCK_SCAN_SCENARIOS) {
+      const timeout = window.setTimeout(
+        () => setPreviewScenario(requested as MockScanScenarioKey),
+        0,
+      );
+      return () => window.clearTimeout(timeout);
+    }
+  }, []);
+
+  useEffect(
+    () => () => {
+      scanImageUrls.current.forEach((url) => URL.revokeObjectURL(url));
+    },
+    [],
+  );
 
   const recommendations = useMemo(() => buildRecommendations(scans), [scans]);
+  const preview = previewScenario ? MOCK_SCAN_SCENARIOS[previewScenario] : null;
+  const visibleScans = preview?.scans ?? scans;
+  const visibleRecommendations = preview?.recommendations ?? recommendations;
+  const visibleError = preview?.error ?? error;
 
   async function handleImage(
     file: File,
     source: "upload" | "camera",
   ): Promise<AnalyzeOutcome> {
+    setPreviewScenario(null);
     setBusy(true);
     setError(null);
     try {
@@ -36,9 +69,11 @@ export default function Home() {
         }
         throw new Error(body.error ?? `Request failed (${response.status})`);
       }
+      const imageUrl = URL.createObjectURL(file);
+      scanImageUrls.current.push(imageUrl);
       const result: ScanResult = {
         ...(await response.json()),
-        image_url: URL.createObjectURL(file),
+        image_url: imageUrl,
       };
       setScans((previous) => [...previous, result]);
       return { kind: "scan", scan: result };
@@ -68,16 +103,17 @@ export default function Home() {
               Tray return station
             </span>
             <span className="rounded-full bg-sky-tint px-3 py-1.5 font-medium text-brand tabular-nums">
-              {scans.length} {scans.length === 1 ? "scan" : "scans"}
+              {visibleScans.length}{" "}
+              {visibleScans.length === 1 ? "scan" : "scans"}
             </span>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-        <div className="mb-8 max-w-3xl sm:mb-10">
-          <h1 className="text-balance text-[clamp(2.35rem,5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-ink">
-            Scan the tray. Improve the next serving.
+      <main className="mx-auto max-w-[1440px] overflow-x-hidden px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-9">
+        <div className="mb-6 max-w-5xl sm:mb-8">
+          <h1 className="text-balance text-[clamp(2.25rem,4vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-ink">
+            Scan every tray. Improve every serving.
           </h1>
           <p className="mt-5 max-w-2xl font-editorial text-lg leading-7 text-graphite sm:text-xl sm:leading-8">
             Keep the station moving while MottainAI turns every returned plate
@@ -85,10 +121,10 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12 lg:gap-6">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-5 lg:grid-cols-12 lg:gap-6">
           <section
             aria-labelledby="scanner-heading"
-            className="rounded-[12px] border border-line bg-white p-4 sm:p-6 lg:col-span-8"
+            className="min-w-0 rounded-[12px] border border-line bg-white p-4 sm:p-6 lg:col-span-8"
           >
             <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -115,9 +151,9 @@ export default function Home() {
           </section>
 
           <ResultsPanel
-            scans={scans}
-            recommendations={recommendations}
-            error={error}
+            scans={visibleScans}
+            recommendations={visibleRecommendations}
+            error={visibleError}
           />
         </div>
 

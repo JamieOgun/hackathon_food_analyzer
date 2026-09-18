@@ -87,13 +87,13 @@ Operators need to understand the scanner state and the result of each tray quick
   - Commit: pending.
   - RDD: disabled/unmanaged.
 
-- [ ] **UI-05 — Add deterministic design preview scenarios**
+- [x] **UI-05 — Add deterministic design preview scenarios**
   - Provide development-only mock states for empty, successful, populated-history, and error views.
   - Keep preview data deterministic and prevent preview controls from rendering in production.
   - Use the mocks for browser captures without camera access or external vision-provider calls.
   - Checks: `npm run lint`, `npm run build`, preview state browser review.
-  - Evidence: pending.
-  - Commit: pending.
+  - Evidence: `npm run lint` passed; `npm run build` passed; `?preview=empty|single|many|error` renders deterministic states only in development; desktop and mobile browser captures confirmed no preview controls are visible.
+  - Commit: pending final work-unit commit.
   - RDD: disabled/unmanaged.
 
 ## Acceptance criteria
@@ -115,7 +115,8 @@ Operators need to understand the scanner state and the result of each tray quick
 - UI-01 completed: product truth, code-first configuration, direction contract, design tokens, typography, page shell, and scan-first workspace grid are in place.
 - UI-02 completed: capture controls and scanner states were rebuilt while preserving camera/upload behavior.
 - UI-03 completed: the latest result now fills the scanner-side rail; recommendations and history sit below; analysis errors no longer create an empty grid column.
+- UI-05 completed: deterministic development previews remain available by query parameter while the visible mock selector is excluded from the product UI.
 
 ## Next step
 
-Complete UI-05 preview integration, then run UI-04 responsive, accessibility, detector, and finish-review work.
+Complete UI-04 finish review and design-system documentation, then prepare the feature branch for pull-request delivery.

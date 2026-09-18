@@ -102,7 +102,7 @@ Operators need to understand the scanner state and the result of each tray quick
   - Resolve image/result conflicts without losing null-safe detections, clamped overlays, error placement, or development previews.
   - Checks: `npm run lint`, `npm run build`, representative development-preview browser review.
   - Evidence: merged `origin/main` at `00f69de`; retained upstream resilient vision handling, `/api/mottainai`, voice feedback, updated menu/types, and overview documentation; preserved the scan-first shell, null-safe/clamped annotations, development previews, and right-rail error state. `npm run lint` and `npm run build` passed; `?preview=error` was reviewed at `1440×900` in `.impeccable/review/merge-error.png` with no visible mock controls or empty result column. Physical-camera and audio playback smoke tests remain unavailable in this environment.
-  - Commit: pending merge work-unit commit.
+  - Commit: `c7e1fb3` (`chore(merge): integrate latest main`).
   - RDD: disabled/unmanaged.
 
 ## Acceptance criteria
@@ -130,4 +130,4 @@ Operators need to understand the scanner state and the result of each tray quick
 
 ## Next step
 
-Record the merge commit identity, then prepare the feature branch for pull-request delivery.
+Prepare the feature branch for pull-request delivery.

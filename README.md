@@ -1,3 +1,7 @@
+# MottainAI
+
+Restaurant plate-waste scanner: snap returned plates, vision models estimate what's left uneaten, and the app prices the waste in yen and recommends portion cuts.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

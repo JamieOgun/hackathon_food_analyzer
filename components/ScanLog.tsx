@@ -15,23 +15,23 @@ function formatTime(iso: string) {
 
 export default function ScanLog({ scans }: ScanLogProps) {
   if (scans.length === 0) {
-    return <p className="text-sm text-zinc-400">No scans yet.</p>;
+    return <p className="text-sm text-stone-400">No scans yet.</p>;
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+      <div className="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-3 rounded-sm border-2 border-dashed border-emerald-400" />
           Plate / tray
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm border-2 border-amber-400 bg-amber-400/15" />
+          <span className="inline-block h-3 w-3 rounded-sm border-2 border-waste bg-waste/15" />
           Leftover food
         </span>
       </div>
 
-      <ul className="flex flex-col gap-3">
+      <ul className="flex max-h-[65dvh] flex-col gap-3 overflow-y-auto pr-1">
         {scans
           .slice()
           .reverse()
@@ -42,7 +42,7 @@ export default function ScanLog({ scans }: ScanLogProps) {
             return (
               <li
                 key={scan.id}
-                className="grid grid-cols-1 gap-3 rounded-lg border border-zinc-200 p-3 sm:grid-cols-[minmax(0,11rem)_1fr] dark:border-zinc-800"
+                className="grid grid-cols-[7rem_1fr] gap-3 rounded-lg border border-stone-200 p-3 sm:grid-cols-[minmax(0,11rem)_1fr] dark:border-stone-800"
               >
                 {scan.image_url ? (
                   <AnnotatedImage
@@ -51,17 +51,17 @@ export default function ScanLog({ scans }: ScanLogProps) {
                     detections={scan.detections ?? []}
                   />
                 ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-md bg-zinc-100 text-xs text-zinc-400 dark:bg-zinc-800">
+                  <div className="flex aspect-[4/3] items-center justify-center rounded-md bg-stone-100 text-xs text-stone-400 dark:bg-stone-800">
                     Sample scan — no image
                   </div>
                 )}
 
                 <div className="flex min-w-0 flex-col gap-2 text-sm">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    <span className="font-semibold text-foreground">
                       {scan.dish_name}
                     </span>
-                    <span className="font-mono text-zinc-700 dark:text-zinc-300">
+                    <span className="font-mono font-medium text-brand-deep dark:text-waste">
                       {scan.yen_wasted != null
                         ? `¥${scan.yen_wasted.toLocaleString()} wasted`
                         : "—"}
@@ -69,26 +69,26 @@ export default function ScanLog({ scans }: ScanLogProps) {
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 text-xs">
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 font-medium text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                    <span className="rounded-full bg-waste/15 px-2 py-0.5 font-medium text-brand-deep dark:bg-waste/20 dark:text-waste">
                       {BUCKET_LABEL[scan.remaining_bucket]} (
                       {Math.round(scan.remaining_fraction * 100)}%)
                     </span>
-                    <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                    <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600 dark:bg-stone-800 dark:text-stone-300">
                       {Math.round(scan.confidence * 100)}% confident
                     </span>
-                    <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                    <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600 dark:bg-stone-800 dark:text-stone-300">
                       {scan.source === "camera" ? "Live camera" : "Upload"} ·{" "}
                       {formatTime(scan.timestamp)}
                     </span>
                   </div>
 
                   <div>
-                    <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                    <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
                       Reasoning
                     </h4>
-                    <p className="text-zinc-700 dark:text-zinc-300">
+                    <p className="text-stone-700 dark:text-stone-300">
                       {scan.reasoning ?? (
-                        <span className="text-zinc-400">
+                        <span className="text-stone-400">
                           No reasoning recorded for this scan.
                         </span>
                       )}
@@ -97,7 +97,7 @@ export default function ScanLog({ scans }: ScanLogProps) {
 
                   {(leftovers.length > 0 || scan.visible_items.length > 0) && (
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
                         Detected leftovers
                       </h4>
                       <div className="mt-1 flex flex-wrap gap-1.5">
@@ -107,7 +107,7 @@ export default function ScanLog({ scans }: ScanLogProps) {
                         ).map((item, i) => (
                           <span
                             key={i}
-                            className="rounded-sm bg-amber-400/20 px-1.5 py-0.5 text-xs text-amber-900 dark:text-amber-200"
+                            className="rounded-sm bg-waste/20 px-1.5 py-0.5 text-xs text-brand-deep dark:bg-waste/25 dark:text-waste"
                           >
                             {item}
                           </span>

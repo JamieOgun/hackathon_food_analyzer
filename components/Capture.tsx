@@ -30,13 +30,13 @@ const PHASE_UI: Record<
 > = {
   calibrating: {
     label: "Learning empty surface — keep the area clear",
-    ring: "ring-zinc-400",
-    dot: "bg-zinc-400",
+    ring: "ring-stone-400",
+    dot: "bg-stone-400",
   },
   empty: {
     label: "Waiting for a tray",
-    ring: "ring-zinc-400",
-    dot: "bg-zinc-400",
+    ring: "ring-stone-400",
+    dot: "bg-stone-400",
   },
   moving: {
     label: "Movement detected",
@@ -63,7 +63,7 @@ const PHASE_UI: Record<
 /** Continuity Camera shows up with the phone's name, e.g. "Jamie's iPhone
  * Camera" or "… Desk View Camera" — prefer it over the built-in webcam. */
 const PHONE_CAMERA_RE = /iphone|continuity|desk view/i;
-const CAMERA_STORAGE_KEY = "leftover-analyzer:camera-id";
+const CAMERA_STORAGE_KEY = "mottainai:camera-id";
 
 function readSavedCamera(): string | null {
   try {
@@ -309,8 +309,8 @@ export default function Capture({ onImage, busy }: CaptureProps) {
           onClick={() => handleModeChange("upload")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "upload"
-              ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900"
-              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+              ? "bg-brand text-white"
+              : "bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300"
           }`}
         >
           Upload
@@ -320,8 +320,8 @@ export default function Capture({ onImage, busy }: CaptureProps) {
           onClick={() => handleModeChange("camera")}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             mode === "camera"
-              ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900"
-              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+              ? "bg-brand text-white"
+              : "bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300"
           }`}
         >
           Live camera
@@ -333,7 +333,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
       )}
 
       {mode === "upload" && (
-        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500 hover:border-zinc-400 dark:border-zinc-700">
+        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-stone-300 p-8 text-center text-sm text-stone-500 hover:border-brand dark:border-stone-700 dark:text-stone-400">
           <span>Click to choose a plate photo</span>
           <input
             type="file"
@@ -348,12 +348,12 @@ export default function Capture({ onImage, busy }: CaptureProps) {
       {mode === "camera" && (
         <div className="flex flex-col gap-3">
           {cameras.length > 0 && (
-            <label className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <label className="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-300">
               Camera
               <select
                 value={cameraId}
                 onChange={(e) => handleCameraChange(e.target.value)}
-                className="min-w-0 flex-1 rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-800"
+                className="min-w-0 flex-1 rounded-md border border-stone-300 bg-surface px-2 py-1.5 text-sm dark:border-stone-700"
               >
                 {cameras.map((c, i) => (
                   <option key={c.deviceId || i} value={c.deviceId}>
@@ -381,7 +381,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
               </div>
             )}
             {streaming && autoDetect && lastLive?.kind === "no_plate" && (
-              <div className="absolute inset-x-2 bottom-2 rounded-md bg-black/75 px-3 py-2 text-xs text-zinc-200">
+              <div className="absolute inset-x-2 bottom-2 rounded-md bg-black/75 px-3 py-2 text-xs text-stone-200">
                 <span className="font-semibold text-white">
                   Skipped — no plate seen.
                 </span>{" "}
@@ -399,11 +399,12 @@ export default function Capture({ onImage, busy }: CaptureProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <label className="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-300">
               <input
                 type="checkbox"
                 checked={autoDetect}
                 onChange={(e) => setAutoDetect(e.target.checked)}
+                className="accent-brand"
               />
               Auto-detect trays
             </label>
@@ -411,7 +412,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
               type="button"
               onClick={() => void analyzeCurrentFrame()}
               disabled={!streaming || busy}
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+              className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#c52f37] disabled:opacity-50"
             >
               Analyze now
             </button>
@@ -420,7 +421,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
                 type="button"
                 onClick={recalibrate}
                 disabled={!streaming}
-                className="rounded-md bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-600 disabled:opacity-50 dark:bg-zinc-800 dark:text-zinc-300"
+                className="rounded-md bg-stone-100 px-3 py-2 text-sm font-medium text-stone-600 disabled:opacity-50 dark:bg-stone-800 dark:text-stone-300"
               >
                 Re-learn empty surface
               </button>
@@ -439,7 +440,7 @@ export default function Capture({ onImage, busy }: CaptureProps) {
             alt="Last captured plate"
             className="h-20 w-20 rounded-md object-cover"
           />
-          <span className="text-sm text-zinc-500">
+          <span className="text-sm text-stone-500 dark:text-stone-400">
             {busy ? "Analyzing…" : "Last capture"}
           </span>
         </div>

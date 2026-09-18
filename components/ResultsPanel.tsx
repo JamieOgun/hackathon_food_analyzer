@@ -27,8 +27,8 @@ export default function ResultsPanel({
   const tabClass = (t: Tab) =>
     `-mb-px border-b-2 px-3 py-2 text-sm font-medium ${
       tab === t
-        ? "border-zinc-900 text-zinc-900 dark:border-zinc-50 dark:text-zinc-50"
-        : "border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+        ? "border-brand text-brand"
+        : "border-transparent text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
     }`;
 
   return (
@@ -39,7 +39,7 @@ export default function ResultsPanel({
         </div>
       )}
 
-      <div className="flex border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex border-b border-stone-200 dark:border-stone-800">
         <button
           type="button"
           className={tabClass("overview")}
@@ -61,48 +61,51 @@ export default function ResultsPanel({
       ) : (
         <>
           <div>
-            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
               Top recommendation
             </h3>
             {recommendations.length === 0 ? (
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-stone-500 dark:text-stone-400">
                 Scan the same dish a couple of times to surface a pattern.
               </p>
             ) : (
-              <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+              <div className="rounded-lg border border-waste/40 bg-waste/10 p-4 text-sm text-brand-deep dark:border-waste/50 dark:bg-waste/15 dark:text-waste">
                 {recommendations[0].message}
               </div>
             )}
           </div>
 
           <div>
-            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
-              Scans ({scans.length}) &middot; &yen;
-              {totalYenWasted.toLocaleString()} wasted so far
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+              Scans ({scans.length}) &middot;{" "}
+              <span className="rounded-sm bg-waste px-1 font-semibold text-brand-deep">
+                &yen;{totalYenWasted.toLocaleString()} wasted
+              </span>{" "}
+              so far
             </h3>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex max-h-[65dvh] flex-col gap-2 overflow-y-auto pr-1">
               {scans
                 .slice()
                 .reverse()
                 .map((scan) => (
                   <li
                     key={scan.id}
-                    className="flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
+                    className="flex items-center justify-between rounded-md border border-stone-200 px-3 py-2 text-sm dark:border-stone-800"
                   >
                     <div>
-                      <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                      <span className="font-medium text-foreground">
                         {scan.dish_name}
                       </span>
-                      <span className="ml-2 text-zinc-500">
+                      <span className="ml-2 text-stone-500 dark:text-stone-400">
                         {BUCKET_LABEL[scan.remaining_bucket]}
                       </span>
                       {scan.visible_items.length > 0 && (
-                        <div className="text-xs text-zinc-400">
+                        <div className="text-xs text-stone-400">
                           Left behind: {scan.visible_items.join(", ")}
                         </div>
                       )}
                     </div>
-                    <span className="font-mono text-zinc-700 dark:text-zinc-300">
+                    <span className="font-mono font-medium text-brand-deep dark:text-waste">
                       {scan.yen_wasted != null
                         ? `¥${scan.yen_wasted.toLocaleString()}`
                         : "—"}
@@ -110,7 +113,7 @@ export default function ResultsPanel({
                   </li>
                 ))}
               {scans.length === 0 && (
-                <li className="text-sm text-zinc-400">No scans yet.</li>
+                <li className="text-sm text-stone-400">No scans yet.</li>
               )}
             </ul>
           </div>

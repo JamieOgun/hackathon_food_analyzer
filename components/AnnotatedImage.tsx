@@ -13,8 +13,8 @@ const KIND_STYLE: Record<Detection["kind"], { box: string; chip: string }> = {
     chip: "bg-emerald-500 text-white",
   },
   leftover: {
-    box: "border-2 border-amber-400 bg-amber-400/15",
-    chip: "bg-amber-400 text-amber-950",
+    box: "border-2 border-waste bg-waste/15",
+    chip: "bg-waste text-brand-deep",
   },
 };
 

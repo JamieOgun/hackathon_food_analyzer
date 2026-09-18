@@ -49,14 +49,14 @@ Operators need to understand the scanner state and the result of each tray quick
 
 ## Tasks
 
-- [ ] **UI-01 — Establish product and design foundations**
+- [x] **UI-01 — Establish product and design foundations**
   - Capture confirmed product truth in `PRODUCT.md`.
   - Record code-first workflow configuration.
   - Replace global tokens, typography, canvas, focus, motion, and reusable surface/action primitives.
   - Rebuild the page shell around a scan-first workspace.
   - Checks: `npm run lint`, `npm run build`.
-  - Evidence: pending.
-  - Commit: pending.
+  - Evidence: `npm run lint` passed; `npm run build` passed with `/` static and `/api/estimate` dynamic.
+  - Commit: `b622cb0` (`feat(ui): establish scan-first design foundation`).
   - RDD: disabled/unmanaged.
 
 - [ ] **UI-02 — Rebuild the capture workspace**
@@ -102,8 +102,8 @@ Operators need to understand the scanner state and the result of each tray quick
 
 - Feature authorized and visual direction confirmed.
 - Existing UI, repository stack, Next.js guidance, RDD mode, and available checks inspected.
-- No source implementation started.
+- UI-01 completed: product truth, code-first configuration, direction contract, design tokens, typography, page shell, and scan-first workspace grid are in place.
 
 ## Next step
 
-Implement UI-01, then continue through the remaining work units on the same feature branch.
+Complete and verify UI-02, then continue through the remaining work units on the same feature branch.
